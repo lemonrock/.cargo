@@ -44,6 +44,7 @@ _program()
 		local name="XXXXX"
 		install_sed "$year" "$repositoryName" "$ourFolderName"/templates/README.md README.md
 		install_sed "$year" "$repositoryName" "$ourFolderName"/COPYRIGHT COPYRIGHT
+		install_sed "$year" "$repositoryName" "$ourFolderName"/LICENSE LICENSE
 		install_sed "$year" "$repositoryName" "$ourFolderName"/templates/Cargo.toml Cargo.toml
     }
 }
