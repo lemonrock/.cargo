@@ -15,7 +15,6 @@ Icon[]
 target/
 target-install/
 .cargo/target
-!Cargo.lock
 
 # IntelliJ related
 .idea/workspace.xml
