@@ -14,7 +14,7 @@ _program()
 		local repositoryName="$2"
 		local fromFilePath="$3"
 		local toFilePath="$4"
-		sed -e 's/\2016/'"$year"'/g' -e 's/\.cargo/'"$repositoryName"'/g' "$fromFilePath" >"$toFilePath"
+		sed -e 's/2016/'"$year"'/g' -e 's/\.cargo/'"$repositoryName"'/g' "$fromFilePath" >"$toFilePath"
 	}
 		
     install_install()
@@ -26,8 +26,6 @@ _program()
 		
 		local repositoryFullPath="$(pwd)"
 		local repositoryName="${repositoryFullPath##*/}"
-		
-		cd "$install_installedToPath" 1>/dev/null
 		
 		local linkedFile
 		for linkedFile in .gitignore clippy.toml rustfmt.toml build
