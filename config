@@ -15,5 +15,6 @@ rustflags = [
 	"-Wunused-extern-crates",
 	"-Wunused-import-braces",
 	"-Wmissing-copy-implementations",
-	"-Wmissing-debug-implementations"
+	"-Wmissing-debug-implementations",
+	"-Ddrop_with_repr_extern"
 ]
