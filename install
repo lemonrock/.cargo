@@ -28,7 +28,7 @@ _program()
 		local repositoryName="${repositoryFullPath##*/}"
 		
 		local linkedFile
-		for linkedFile in .gitignore clippy.toml rustfmt.toml
+		for linkedFile in .gitignore clippy.toml rustfmt.toml .tm_properties
 		do
 			ln -s "$ourFolderName"/"$linkedFile"
 		done
