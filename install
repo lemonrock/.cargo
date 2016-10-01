@@ -34,7 +34,7 @@ _program()
 		done
 		
 		local folder
-		for folder in components forks src
+		for folder in src
 		do
 			mkdir -m 0755 -p "$folder"
 		done
@@ -46,6 +46,7 @@ _program()
 		install_sed "$year" "$repositoryName" "$ourFolderName"/COPYRIGHT COPYRIGHT
 		install_sed "$year" "$repositoryName" "$ourFolderName"/LICENSE LICENSE
 		install_sed "$year" "$repositoryName" "$ourFolderName"/templates/Cargo.toml Cargo.toml
+		install_sed "$year" "$repositoryName" "$ourFolderName"/templates/lib.rs src/lib.rs
     }
 }
 
