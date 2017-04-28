@@ -5,18 +5,8 @@
 verbose = true
 color = "auto"
 
-# We can't use -Z extra-plugins=clippy as this means clippy will no longer build (as it requires itself to be its own plugin)
 [build]
 target-dir = ".cargo/target"
-rustflags = [
-	"-Anon-snake-case",
-	"-Anon-upper-case-globals",
-	"-Wtrivial-casts",
-	"-Wunused-extern-crates",
-	"-Wunused-import-braces",
-	"-Wmissing-copy-implementations",
-	"-Wmissing-debug-implementations"
-]
 
 [target.thumbv6m-none-eabi]
 linker = "arm-none-eabi-cc"
