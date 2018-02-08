@@ -6,7 +6,8 @@ verbose = true
 color = "auto"
 
 [build]
-target-dir = ".cargo/target"
+# Xargo / Cargo combination really doesn't like this
+#target-dir = ".cargo/target"
 
 [target.thumbv6m-none-eabi]
 linker = "arm-none-eabi-cc"
