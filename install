@@ -43,13 +43,11 @@ _program()
 		# Probably only works on Mac OS X and the BSDs
 		local year="$(date -u -j +'%Y')"
 		local name="XXXXX"
-		install_sed "$year" "$repositoryName" "$ourFolderName"/templates/README.md README.md
 		install_sed "$year" "$repositoryName" "$ourFolderName"/COPYRIGHT COPYRIGHT
 		install_sed "$year" "$repositoryName" "$ourFolderName"/LICENSE LICENSE
+		install_sed "$year" "$repositoryName" "$ourFolderName"/templates/README.md README.md
 		install_sed "$year" "$repositoryName" "$ourFolderName"/templates/Cargo.toml Cargo.toml
-		install_sed "$year" "$repositoryName" "$ourFolderName"/templates/build.rs src/build.rs
 		install_sed "$year" "$repositoryName" "$ourFolderName"/templates/lib.rs src/lib.rs
-		install_sed "$year" "$repositoryName" "$ourFolderName"/templates/main.rs src/main.rs
     }
 }
 
