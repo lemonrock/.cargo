@@ -15,6 +15,7 @@ Icon[]
 target/
 target-install/
 .cargo/target
+workspace/target
 
 # IntelliJ related
 .idea/workspace.xml
