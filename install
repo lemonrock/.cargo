@@ -17,20 +17,7 @@ _program()
 		local toFilePath="$4"
 		sed -e 's/2016/'"$year"'/g' -e 's/\.cargo/'"$repositoryName"'/g' "$fromFilePath" >"$toFilePath"
 	}
-
-    install_targetSpecifications()
-    {
-		set +f
-    	set -- "$ourFolderName"/target-specifications/*.json
-    	set -f
-
-		local linkedFile
-		for linkedFile in "$@"
-		do
-			ln -s "$linkedFile"
-		done
-	}
-
+	
     install_install()
     {
 		cd "$_program_path" 1>/dev/null
@@ -46,8 +33,6 @@ _program()
 		do
 			ln -s "$ourFolderName"/"$linkedFile"
 		done
-
-		install_targetSpecifications
 
 		local folder
 		for folder in src
