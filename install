@@ -48,6 +48,12 @@ _program()
 		install_sed "$year" "$repositoryName" "$ourFolderName"/templates/README.md README.md
 		install_sed "$year" "$repositoryName" "$ourFolderName"/templates/Cargo.toml Cargo.toml
 		install_sed "$year" "$repositoryName" "$ourFolderName"/templates/lib.rs src/lib.rs
+		
+		# IntelliJ support.
+		ln -s "$ourFolderName"/intellij-module.iml "$repositoryName".iml
+		rsync -q -a -v "$ourFolderName"/intellij.idea/ .idea/
+		sed -i '' -e 's/intellij-module/'"$repositoryName"'/g' .idea/modules.xml
+		sed -i '' -e 's/intellij-module/'"$repositoryName"'/g' .idea/copyright/intellij-module.xml
     }
 }
 
