@@ -7,11 +7,6 @@
       <sourceFolder url="file://$MODULE_DIR$/examples" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/benches" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../linux-support-clone/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../linux-support-clone/examples" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../linux-support-clone/tests" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../linux-support-clone/benches" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../linux-support-clone/target" />
       <excludeFolder url="file://$MODULE_DIR$/.cargo" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
