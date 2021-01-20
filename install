@@ -15,7 +15,7 @@ _program()
 		local repositoryName="$2"
 		local fromFilePath="$3"
 		local toFilePath="$4"
-		sed -e 's/2016/'"$year"'/g' -e 's/\.cargo/'"$repositoryName"'/g' "$fromFilePath" >"$toFilePath"
+		sed -e 's/YEAR/'"$year"'/g' -e 's/\.cargo/'"$repositoryName"'/g' "$fromFilePath" >"$toFilePath"
 	}
 	
     install_install()

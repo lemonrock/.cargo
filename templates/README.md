@@ -1,10 +1,10 @@
-# .cargo
+# NAME
 
-[.cargo] is a rust crate.
+[NAME] is a rust crate.
 
 
 ## Licensing
 
 The license for this project is MIT.
 
-[.cargo]: https://github.com/lemonrock/.cargo ".cargo GitHub page"
+[NAME]: https://github.com/lemonrock/NAME "NAME GitHub page"
