@@ -54,6 +54,11 @@ _program()
 		rsync -q -a -v "$ourFolderName"/intellij.idea/ .idea/
 		sed -i '' -e 's/intellij-module/'"$repositoryName"'/g' .idea/modules.xml
 		sed -i '' -e 's/intellij-module/'"$repositoryName"'/g' .idea/copyright/intellij-module.xml
+		
+		# Tools
+		mkdir -m 0700 -p tools 1>/dev/null 2>/dev/null
+		cd tools 1>/dev/null 2>/dev/null
+		ln -s ../"$ourFolderName"/tools/cargo-vendor-versioned-dirs
     }
 }
 
