@@ -109,4 +109,6 @@ if [ -d workspace ]; then
 	cd workspace 1>/dev/null 2>/dev/null
 fi
 
-exec cargo vendor --versioned-dirs --quiet .cargo/vendored-sources
+cargo_binary_path="$(command -v cargo)"
+export PATH=/usr/local/bin:/usr/bin:/bin
+exec /usr/bin/env -i PATH="$PATH" ${cargo_binary_path} vendor --versioned-dirs --quiet .cargo/vendored-sources

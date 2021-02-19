@@ -123,7 +123,14 @@ cpu_profile="$2"
 package_name="$3"
 shift 3
 
-build_profile_path="$(pwd)/.cargo/build-profiles/${target}.${cpu_profile}"
+if [ -z ${TERM+x} ]; then
+	export TERM='dumb'
+fi
 
-. "${build_profile_path}.environment-variables"
-exec cargo -Zunstable-options -Zconfig-include --config "${build_profile_path}.toml" publish --target "$target" --manifest-path workspace/"$package_name"/Cargo.toml "$@"
+build_profile_path="$(pwd)/.cargo/build-profiles/${target}.${cpu_profile}"
+cargo_binary_path="$(command -v cargo)"
+export PATH=/usr/local/bin:/usr/bin:/bin
+exec /usr/bin/env -i PATH="$PATH" TERM="$TERM" sh <<-EOF
+	. "${build_profile_path}.sh" publish "$target" "$cpu_profile"
+	exec ${cargo_binary_path} -Zunstable-options -Zconfig-include --config "${build_profile_path}.toml" publish --target "$target" --manifest-path workspace/"$package_name"/Cargo.toml $@
+EOF

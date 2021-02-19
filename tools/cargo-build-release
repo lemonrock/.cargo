@@ -108,7 +108,7 @@ cd "$(_program_path_find)"/../.. 1>/dev/null 2>/dev/null
 case $# in
 	
 	0|1)
-		printf "Specify a TARGET and CPU_PROFILE as the first two arguments, eg ./cargo-build-releas x86_64-unknown-linux-musl tiger-lake --package my-package\n" 1>&2
+		printf "Specify a TARGET and CPU_PROFILE as the first two arguments, eg ./cargo-build-release x86_64-unknown-linux-musl tiger-lake --package my-package\n" 1>&2
 		exit 1
 	;;
 	
@@ -128,7 +128,13 @@ if [ -d workspace ]; then
 	cd workspace 1>/dev/null 2>/dev/null
 fi
 
+if [ -z ${TERM+x} ]; then
+	export TERM='dumb'
+fi
 
-
-. "${build_profile_path}.environment-variables"
-exec cargo -Zunstable-options -Zconfig-include --config "${build_profile_path}.toml" --offline build --release --target "$target" "$@"
+cargo_binary_path="$(command -v cargo)"
+export PATH=/usr/local/bin:/usr/bin:/bin
+exec /usr/bin/env -i PATH="$PATH" TERM="$TERM" sh <<-EOF
+	. "${build_profile_path}.sh" build-release "$target" "$cpu_profile"
+	exec ${cargo_binary_path} -Zunstable-options -Zconfig-include --config "${build_profile_path}.toml" --offline build --release --target "$target" $@
+EOF
