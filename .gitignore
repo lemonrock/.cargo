@@ -15,6 +15,7 @@ Icon[]
 target/
 target-install/
 .cargo/target
+.cargo/out
 workspace/target
 
 # IntelliJ related

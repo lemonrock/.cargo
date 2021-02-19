@@ -105,8 +105,30 @@ _program_path_find()
 
 cd "$(_program_path_find)"/../.. 1>/dev/null 2>/dev/null
 
+case $# in
+	
+	0|1)
+		printf "Specify a TARGET and CPU_PROFILE as the first two arguments, eg ./cargo-build-release x86_64-unknown-linux-musl tiger-lake --package my-package\n" 1>&2
+		exit 1
+	;;
+	
+	*)
+		:
+	;;
+	
+esac
+
+target="$1"
+cpu_profile="$2"
+shift 2
+
+build_profile_path="$(pwd)/.cargo/build-profiles/${target}.${cpu_profile}"
+
 if [ -d workspace ]; then
 	cd workspace 1>/dev/null 2>/dev/null
 fi
 
-exec cargo vendor --versioned-dirs --quiet .cargo/vendored-sources
+
+
+. "${build_profile_path}.environment-variables"
+exec cargo -Zunstable-options -Zconfig-include --config "${build_profile_path}.toml" build --release --target "$target" "$@"

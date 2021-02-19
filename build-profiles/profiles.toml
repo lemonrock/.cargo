@@ -1,0 +1,66 @@
+# This file is part of .cargo. It is subject to the license terms in the COPYRIGHT file found in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/.cargo/master/COPYRIGHT. No part of rust1, including this file, may be copied, modified, propagated, or distributed except according to the terms contained in the COPYRIGHT file.
+# Copyright © 2016 The developers of .cargo. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/.cargo/master/COPYRIGHT.
+
+
+[profile.release]
+opt-level = 3
+debug = 0
+debug-assertions = false
+overflow-checks = false
+lto = "fat"
+panic = "unwind"
+incremental = false
+codegen-units = 1
+rpath = false
+
+[profile.test]
+opt-level = 0
+debug = 2
+debug-assertions = true
+overflow-checks = true
+lto = false
+incremental = true
+codegen-units = 256
+rpath = false
+
+[profile.bench]
+opt-level = 3
+debug = false
+debug-assertions = false
+overflow-checks = false
+lto = false
+incremental = false
+codegen-units = 16
+rpath = false
+
+[profile.dev.build-override]
+opt-level = 0
+debug = 2
+debug-assertions = true
+overflow-checks = true
+incremental = true
+codegen-units = 256
+
+[profile.release.build-override]
+opt-level = 0
+debug = 2
+debug-assertions = true
+overflow-checks = true
+incremental = true
+codegen-units = 256
+
+[profile.test.build-override]
+opt-level = 0
+debug = 2
+debug-assertions = true
+overflow-checks = true
+incremental = true
+codegen-units = 256
+
+[profile.bench.build-override]
+opt-level = 0
+debug = 2
+debug-assertions = true
+overflow-checks = true
+incremental = true
+codegen-units = 256
