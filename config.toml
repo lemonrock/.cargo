@@ -12,7 +12,7 @@ progress.when = "auto"
 progress.width = 240
 
 [http]
-ssl-version = "tlsv1.3"
+ssl-version = "tlsv1.2"
 
 [build]
 target-dir = ".cargo/target"
