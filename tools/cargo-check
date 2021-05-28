@@ -138,8 +138,8 @@ main()
 		set -u
 		set -f
 
-		. "${build_profile_sh_file_path}" build-release "$target" "$cpu_profile"
-		exec "${cargo_binary_path}" -Zunstable-options -Zconfig-include --config "${build_profile_toml_file_path}" --locked --offline check --release --target "$target" $@
+		. "${build_profile_sh_file_path}" check "$target" "$cpu_profile"
+		exec "${cargo_binary_path}" -Zunstable-options -Zconfig-include --config "${build_profile_toml_file_path}" --locked --offline check --target "$target" $@
 	EOF
 }
 

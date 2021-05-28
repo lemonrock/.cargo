@@ -2,4 +2,7 @@
 # Copyright © 2021 The developers of r-parser. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/r-parser/master/COPYRIGHT.
 
 
-export CROSS_COMPILE="x86_64-linux-musl-"
+# eg check, build-release or publish
+action="$1"
+target="$2"
+cpu_profile="$3"

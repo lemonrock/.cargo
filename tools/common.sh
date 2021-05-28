@@ -51,7 +51,7 @@ remove_folders_in_folder_if_it_exists()
 	local folder
 	for folder in "$@"
 	do
-		local folder_path="$user_local_cargo_registry_folder_path"/folder
+		local folder_path="$user_local_cargo_registry_folder_path"/"$folder"
 		
 		if [ -d "$folder_path" ]; then
 			set +f
@@ -165,10 +165,16 @@ ensure_vendored_sources_folder_path_exists()
 	fi
 }
 
+local rust_toolchain_file_path
 ensure_rust_toolchain_file_exists()
 {
-	local rust_toolchain_file_path="$repository_root_folder_path"/rust-toolchain
+	rust_toolchain_file_path="$repository_root_folder_path"/rust-toolchain.toml
 	exit_if_configuration_file_missing "$rust_toolchain_file_path"
+}
+
+ensure_rust_toolchain_installed()
+{
+	local channel="$(grep -m 1 '^channel' rust-toolchain | tr -d ' "' | awk -F= '{print $2}')"
 }
 
 ensure_HOME_is_exported()
@@ -215,7 +221,7 @@ execute_command()
 
 execute_command_with_heredoc()
 {
-	"$execute_command" "$@" <0
+	execute_command "$@" </dev/stdin
 }
 
 common_initialization()

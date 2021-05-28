@@ -140,7 +140,7 @@ main()
 		set -u
 		set -f
 
-		. "${build_profile_sh_file_path}" build-release "$target" "$cpu_profile"
+		. "${build_profile_sh_file_path}" publish "$target" "$cpu_profile"
 		exec "${cargo_binary_path}" -Zunstable-options -Zconfig-include --config "${build_profile_toml_file_path}" publish --target "$target" --manifest-path workspace/"$package_name"/Cargo.toml $@
 	EOF
 }
