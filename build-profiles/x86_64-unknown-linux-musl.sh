@@ -2,7 +2,7 @@
 # Copyright © 2021 The developers of r-parser. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/r-parser/master/COPYRIGHT.
 
 
-# eg check, build-release or publish
+# eg check, build or publish
 action="$1"
 target="$2"
 cpu_profile="$3"

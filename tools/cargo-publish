@@ -138,15 +138,7 @@ main()
 	# cargo publish is very sensitive when used with workspaces and vendored sources.
 	cd "$repository_root_folder_path" 1>/dev/null 2>/dev/null
 	local relative_manifest_file_path=workspace/"$package_name"/Cargo.toml
-	
-	execute_command_with_heredoc sh <<-EOF
-		set -e
-		set -u
-		set -f
-
-		. "${build_profile_sh_file_path}" publish "$target" "$cpu_profile"
-		exec "${cargo_binary_path}" -Zunstable-options -Zconfig-include --config "${build_profile_toml_file_path}" publish --locked --target "$target" --manifest-path "${relative_manifest_file_path}" $@
-	EOF
+	execute_command_cargo_wrapper 'publish' --locked --manifest-path "$relative_manifest_file_path" "$@"
 }
 
 main "$@"

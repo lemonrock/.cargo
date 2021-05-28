@@ -132,15 +132,8 @@ main()
 	shift 2
 
 	set_build_profile_file_without_extension_path "$target" "$cpu_profile"
-	
-	execute_command_with_heredoc sh <<-EOF
-		set -e
-		set -u
-		set -f
 
-		. "${build_profile_sh_file_path}" build-release "$target" "$cpu_profile"
-		exec "${cargo_binary_path}" -Zunstable-options -Zconfig-include --config "${build_profile_toml_file_path}" --locked --offline build --release --target "$target" $@
-	EOF
+	execute_command_cargo_wrapper 'build' --locked --offline --release $@
 }
 
 main "$@"

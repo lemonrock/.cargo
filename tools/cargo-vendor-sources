@@ -124,9 +124,8 @@ main()
 	
 	clear_cargo_registry
 	
-	execute_command "$cargo_binary_path" generate-lockfile --quiet
-	#execute_command "$cargo_binary_path" update --workspace --quiet
-	execute_command "$cargo_binary_path" vendor --locked --versioned-dirs --quiet "$vendored_sources_relative_folder_path"
+	execute_command "$cargo_binary_path" vendor --versioned-dirs --quiet "$vendored_sources_relative_folder_path"
+	execute_command "$cargo_binary_path" generate-lockfile --offline --quiet
 }
 
 main "$@"

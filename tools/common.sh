@@ -70,11 +70,14 @@ remove_folders_in_folder_if_it_exists()
 }
 
 # Changes path to `<root>/`.
+local cargo_tools_folder_path
 local repository_root_folder_path
 local repository_root_dot_cargo_folder_path
 local build_profiles_folder_path
 change_path_to_repository_root()
 {
+	cargo_tools_folder_path="$(pwd)"
+	
 	cd ../.. 1>/dev/null 2>/dev/null
 	
 	repository_root_folder_path="$(pwd)"
@@ -217,6 +220,14 @@ set_build_profile_file_without_extension_path()
 execute_command()
 {
 	/usr/bin/env -i PATH="$PATH" HOME="$HOME" TERM="$TERM" "$@"
+}
+	
+execute_command_cargo_wrapper()
+{
+	local action="$1"
+	shift 1
+	
+	execute_command "$cargo_tools_folder_path"/cargo-target-cpu-profile-wrapper "$build_profile_sh_file_path" "$action" "$target" "$cpu_profile" "$cargo_binary_path" -Zunstable-options -Zconfig-include --config "$build_profile_toml_file_path" "$action" --target "$target" "$@"
 }
 
 execute_command_with_heredoc()
