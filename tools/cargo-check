@@ -103,38 +103,44 @@ _program_path_find()
 	fi
 }
 
-cd "$(_program_path_find)"/../.. 1>/dev/null 2>/dev/null
-
-case $# in
+guard_arguments()
+{
+	case $# in
 	
-	0|1)
-		printf "Specify a TARGET and CPU_PROFILE as the first two arguments, eg ./cargo-check x86_64-unknown-linux-musl tiger-lake --package my-package\n" 1>&2
-		exit 1
-	;;
+		0|1)
+			exit_error_message 'Specify a TARGET and CPU_PROFILE as the first two arguments, eg ./cargo-check x86_64-unknown-linux-musl tiger-lake --package my-package'
+		;;
 	
-	*)
-		:
-	;;
+		*)
+			:
+		;;
 	
-esac
+	esac
+}
 
-target="$1"
-cpu_profile="$2"
-shift 2
+main()
+{
+	# Changes path to <root>/.cargo/tools.
+	cd "$(_program_path_find)" 1>/dev/null 2>/dev/null
 
-build_profile_path="$(pwd)/.cargo/build-profiles/${target}.${cpu_profile}"
+	# Common initialization.
+	. common.sh
+	
+	guard_arguments "$@"
+	local target="$1"
+	local cpu_profile="$2"
+	shift 2
 
-if [ -d workspace ]; then
-	cd workspace 1>/dev/null 2>/dev/null
-fi
+	set_build_profile_file_without_extension_path "$target" "$cpu_profile"
+	
+	execute_command_with_heredoc sh <<-EOF
+		set -e
+		set -u
+		set -f
 
-if [ -z ${TERM+x} ]; then
-	export TERM='dumb'
-fi
+		. "${build_profile_sh_file_path}" build-release "$target" "$cpu_profile"
+		exec "${cargo_binary_path}" -Zunstable-options -Zconfig-include --config "${build_profile_toml_file_path}" --locked --offline check --release --target "$target" $@
+	EOF
+}
 
-cargo_binary_path="$(command -v cargo)"
-export PATH=/usr/local/bin:/usr/bin:/bin
-exec /usr/bin/env -i PATH="$PATH" TERM="$TERM" sh <<-EOF
-	. "${build_profile_path}.sh" check "$target" "$cpu_profile"
-	exec ${cargo_binary_path} -Zunstable-options -Zconfig-include --config "${build_profile_path}.toml" --offline check --release --target "$target" $@
-EOF
+main "$@"
