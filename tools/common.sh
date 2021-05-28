@@ -15,13 +15,13 @@ exit_if_folder_missing()
 	if [ ! -e "$folder_path" ]; then
 		exit_error_message "folder $folder_path does not exist"
 	fi
-	if [ ! -r "$file_path" ]; then
+	if [ ! -r "$folder_path" ]; then
 		exit_error_message "folder $folder_path is not readable"
 	fi
-	if [ ! -d "$file_path" ]; then
+	if [ ! -d "$folder_path" ]; then
 		exit_error_message "folder $folder_path is not a folder"
 	fi
-	if [ ! -x "$file_path" ]; then
+	if [ ! -x "$folder_path" ]; then
 		exit_error_message "folder $folder_path is not searchable"
 	fi
 }
@@ -114,9 +114,9 @@ create_workspace_cargo_config_file_symlink_if_missing()
 	
 	local link='../../.cargo/cargo-vendor-sources.config.toml'
 	if [ -L "$workspace_cargo_config_file_path" ]; then
-		local actual="$(readlink "$link")"
+		local actual="$(readlink "$workspace_cargo_config_file_path")"
 		if [ "$actual" != "$link" ]; then
-			exit_error_message "$workspace_cargo_config_file_path does not have value $link"
+			exit_error_message "$workspace_cargo_config_file_path does not have value $link (it has the value $actual)"
 		fi
 		if [ ! -r "$workspace_cargo_config_file_path" ]; then
 			exit_error_message "configuration file symlink $file_path is not readable"
@@ -147,9 +147,6 @@ set_cargo_paths()
 {
 	cargo_binary_path="$(command -v cargo)"
 	
-	cd ~ 1>/dev/null 2>/dev/null
-	export HOME="$(pwd)"
-	
 	user_local_cargo_folder_path="$HOME"/.cargo
 	exit_if_folder_missing "$user_local_cargo_folder_path"
 	
@@ -174,9 +171,13 @@ ensure_rust_toolchain_file_exists()
 	exit_if_configuration_file_missing "$rust_toolchain_file_path"
 }
 
-ensure_PATH_is_exported()
-{
-	export PATH='/usr/local/bin:/usr/bin:/bin'
+ensure_HOME_is_exported()
+{	
+	if [ -z ${HOME+unset} ]; then
+		cd ~ 1>/dev/null 2>/dev/null
+			export HOME="$(pwd)"
+		cd - 1>/dev/null 2>/dev/null
+	fi
 }
 
 ensure_TERM_is_exported()
@@ -184,6 +185,11 @@ ensure_TERM_is_exported()
 	if [ -z ${TERM+unset} ]; then
 		export TERM='dumb'
 	fi
+}
+
+ensure_PATH_is_exported()
+{
+	export PATH='/usr/local/bin:/usr/bin:/bin'
 }
 
 local build_profile_sh_file_path
@@ -204,7 +210,7 @@ set_build_profile_file_without_extension_path()
 
 execute_command()
 {
-	/usr/bin/env -i PATH="$PATH" TERM="$TERM" "$@"
+	/usr/bin/env -i PATH="$PATH" HOME="$HOME" TERM="$TERM" "$@"
 }
 
 execute_command_with_heredoc()
@@ -214,6 +220,10 @@ execute_command_with_heredoc()
 
 common_initialization()
 {
+	ensure_TERM_is_exported
+
+	ensure_HOME_is_exported
+	
 	change_path_to_repository_root
 	
 	validate_cargo_workspace
@@ -221,8 +231,6 @@ common_initialization()
 	create_workspace_cargo_config_file_symlink_if_missing
 
 	change_path_to_cargo_workspace
-	
-	set_build_profile_file_without_extension_path
 	
 	ensure_vendored_sources_folder_path_exists
 	
@@ -232,8 +240,6 @@ common_initialization()
 	set_cargo_paths
 
 	ensure_PATH_is_exported
-	
-	ensure_TERM_is_exported
 }
 
 common_initialization "$@"
