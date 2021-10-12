@@ -6,5 +6,3 @@
 action="$1"
 target="$2"
 cpu_profile="$3"
-
-export CROSS_COMPILE="x86_64-linux-musl-"
