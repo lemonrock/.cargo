@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-# This file is part of r-parser. It is subject to the license terms in the COPYRIGHT file found in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/r-parser/master/COPYRIGHT. No part of r-parser, including this file, may be copied, modified, propagated, or distributed except according to the terms contained in the COPYRIGHT file.
-# Copyright © 2021 The developers of r-parser. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/r-parser/master/COPYRIGHT.
+# This file is part of .cargo. It is subject to the license terms in the COPYRIGHT file found in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/.cargo/master/COPYRIGHT. No part of .cargo, including this file, may be copied, modified, propagated, or distributed except according to the terms contained in the COPYRIGHT file.
+# Copyright © 2021 The developers of .cargo. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/.cargo/master/COPYRIGHT.
 
 
 set -e
@@ -103,19 +103,28 @@ _program_path_find()
 	fi
 }
 
-guard_arguments()
+main_program()
 {
-	case $# in
+	set_build_profile_file_without_extension_path "$target" "$cpu_profile"
+
+	execute_command_cargo_wrapper 'check' --locked --offline --package "$package_name" "$@"
+}
+
+print_help()
+{
+	printf '%s' "cargo-check -h|-help|--help
+	Displays help.
 	
-		0|1)
-			exit_error_message 'Specify a TARGET and CPU_PROFILE as the first two arguments, eg ./cargo-check x86_64-unknown-linux-musl tiger-lake --package my-package'
-		;;
-	
-		*)
-			:
-		;;
-	
-	esac
+cargo-check PACKAGE_NAME
+	Tries to check PACKAGE_NAME using the detected native CPU architecture.
+	Detection is very crude.
+	eg ./cargo-check PACKAGE_NAME
+
+cargo-check TARGET CPU_PROFILE PACKAGE_NAME
+	Tries to check PACKAGE_NAME using the TARGET and CPU_PROFILE, eg
+	eg ./cargo-check x86_64-unknown-linux-musl tiger-lake PACKAGE_NAME
+	eg ./cargo-check x86_64-apple-darwin coffee-lake PACKAGE_NAME
+"
 }
 
 main()
@@ -126,14 +135,7 @@ main()
 	# Common initialization.
 	. common.sh
 	
-	guard_arguments "$@"
-	local target="$1"
-	local cpu_profile="$2"
-	shift 2
-
-	set_build_profile_file_without_extension_path "$target" "$cpu_profile"
-
-	execute_command_cargo_wrapper 'check' --locked --offline "$@"
+	parse_arguments "$@"
 }
 
 main "$@"

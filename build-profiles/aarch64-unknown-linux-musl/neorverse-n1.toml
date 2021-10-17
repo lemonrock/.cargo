@@ -2,14 +2,12 @@
 # Copyright © 2016 The developers of .cargo. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/.cargo/master/COPYRIGHT.
 
 
-include = "profiles.toml"
+include = "../profiles.toml"
 
-# Enables the `avx512f`, `avx512cd`, `avx512vl`, `avx512dq`, `avx512bw`, `avx512ifma`, `avx512vbmi`, `avx512vpopcntdq`, `avx512vnni`, `avx512vbmi2`, `avx512bitalg` (a super set of `avx512vpopcntdq`) and `avx512vp2intersect` target features as well as the `avx512gfni`, `avx512vpcmulqdq` and `avx512aes` target features (which are not strictly AVX-512 features).
-#
-# A slight superset of Ice Lake.
-[target.x86_64-unknown-linux-musl]
-linker = "x86_64-linux-musl-cc"
+# This is the core backing AWS Graviton2 processors.
+[aarch64.x86_64-unknown-linux-musl]
+linker = "aarch64-linux-musl-cc"
 rustflags = [
-    "-C", "target-cpu=tigerlake",
-    "-C", "target-feature=+crt-static,+prefer-256-bit",
+    "-C", "target-cpu=neoverse-n1",
+    "-C", "target-feature=+crt-static",
 ]

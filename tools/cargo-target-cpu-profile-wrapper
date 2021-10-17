@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-# This file is part of r-parser. It is subject to the license terms in the COPYRIGHT file found in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/r-parser/master/COPYRIGHT. No part of r-parser, including this file, may be copied, modified, propagated, or distributed except according to the terms contained in the COPYRIGHT file.
-# Copyright © 2021 The developers of r-parser. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/r-parser/master/COPYRIGHT.
+# This file is part of .cargo. It is subject to the license terms in the COPYRIGHT file found in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/.cargo/master/COPYRIGHT. No part of .cargo, including this file, may be copied, modified, propagated, or distributed except according to the terms contained in the COPYRIGHT file.
+# Copyright © 2021 The developers of .cargo. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/.cargo/master/COPYRIGHT.
 
 
 set -e
@@ -8,17 +8,52 @@ set -u
 set -f
 
 
+source_file_if_it_exists()
+{
+	local file_path="$1"
+	
+	if [ ! -e "$file_path" ]; then
+		return 0
+	fi
+	if [ ! -r "$file_path" ]; then
+		return 0
+	fi
+	if [ ! -f "$file_path" ]; then
+		return 0
+	fi
+	if [ ! -s "$file_path" ]; then
+		return 0
+	fi
+	
+	. "$file_path" "$@"
+}
+
+source_exports_file_if_it_exists()
+{
+	local relative_file_name="$1"
+	
+	source_file_if_it_exists "$build_profiles_target_folder_path"/"$relative_file_name"
+}
+
 main()
 {
-	local build_profile_sh_file_path="$1"
+	local build_profiles_target_folder_path="$1"
 	local action="$2"
 	local target="$3"
 	local cpu_profile="$4"
 	local cargo_binary_path="$5"
 	local build_profile_toml_file_path="$6"
 	shift 6
-
-	. "$build_profile_sh_file_path" "$action" "$target" "$cpu_profile"
+	
+	if [ "$cpu_profile" != 'native' ]; then
+		source_exports_file_if_it_exists exports
+		source_exports_file_if_it_exists cross-compile.exports
+		source_exports_file_if_it_exists "$cpu_profile".exports
+		source_exports_file_if_it_exists "$cpu_profile".cross-compile.exports
+	else
+		source_exports_file_if_it_exists exports
+	fi
+	
 	exec "$cargo_binary_path" -Zunstable-options -Zconfig-include --config "$build_profile_toml_file_path" "$@"
 }
 

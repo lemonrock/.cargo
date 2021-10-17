@@ -2,10 +2,8 @@
 # Copyright © 2016 The developers of .cargo. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/.cargo/master/COPYRIGHT.
 
 
-include = "profiles.toml"
+include = "../profiles.toml"
 
-# Equivalent to MacPro 'TrashCan' native CPU of ivybridge.
-# Supports only AVX.
 [target.x86_64-apple-darwin]
 rustflags = [
     "-C", "target-cpu=native",

@@ -2,9 +2,4 @@
 # Copyright © 2021 The developers of .cargo. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/.cargo/master/COPYRIGHT.
 
 
-# eg check, build or publish
-action="$1"
-target="$2"
-cpu_profile="$3"
-
 export CROSS_COMPILE="x86_64-linux-musl-"
